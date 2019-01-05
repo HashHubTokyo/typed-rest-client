@@ -65,4 +65,7 @@ export interface ICertConfiguration {
     certFile?: string;
     keyFile?: string;
     passphrase?: string;
+    ca?: string;
+    cert?: string;
+    key?: string;
 }

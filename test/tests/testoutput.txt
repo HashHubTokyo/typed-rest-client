@@ -1,0 +1,10 @@
+{
+  "args": {}, 
+  "headers": {
+    "Connection": "close", 
+    "Host": "httpbin.org", 
+    "User-Agent": "typed-test-client-tests"
+  }, 
+  "origin": "40.83.172.244", 
+  "url": "https://httpbin.org/get"
+}

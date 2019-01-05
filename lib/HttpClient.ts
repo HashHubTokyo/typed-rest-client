@@ -116,17 +116,42 @@ export class HttpClient implements ifm.IHttpClient {
 
             this._certConfig = requestOptions.cert;
 
+            // Check if both file and content are contained
+            if (this._certConfig) {
+                if (this._certConfig.caFile && this._certConfig.ca) {
+                  throw new Error('Cannot accept ca and caFile at the same time.');
+                }
+                if (this._certConfig.certFile && this._certConfig.cert) {
+                    throw new Error('Cannot accept cert and certFile at the same time.');
+                }
+                if (this._certConfig.keyFile && this._certConfig.key) {
+                    throw new Error('Cannot accept key and keyFile at the same time.');
+                }
+            }
+
             // cache the cert content into memory, so we don't have to read it from disk every time 
-            if (this._certConfig && this._certConfig.caFile && fs.existsSync(this._certConfig.caFile)) {
-                this._ca = fs.readFileSync(this._certConfig.caFile, 'utf8');
+            if (this._certConfig) {
+                if (this._certConfig.caFile && fs.existsSync(this._certConfig.caFile)) {
+                    this._ca = fs.readFileSync(this._certConfig.caFile, 'utf8');
+                } else if (this._certConfig.ca) {
+                    this._ca = this._certConfig.ca;
+                }
             }
 
-            if (this._certConfig && this._certConfig.certFile && fs.existsSync(this._certConfig.certFile)) {
-                this._cert = fs.readFileSync(this._certConfig.certFile, 'utf8');
+            if (this._certConfig) {
+                if (this._certConfig.certFile && fs.existsSync(this._certConfig.certFile)) {
+                    this._cert = fs.readFileSync(this._certConfig.certFile, 'utf8');
+                } else if (this._certConfig.cert) {
+                    this._cert = this._certConfig.cert;
+                }
             }
 
-            if (this._certConfig && this._certConfig.keyFile && fs.existsSync(this._certConfig.keyFile)) {
-                this._key = fs.readFileSync(this._certConfig.keyFile, 'utf8');
+            if (this._certConfig) {
+                if (this._certConfig.keyFile && fs.existsSync(this._certConfig.keyFile)) {
+                    this._key = fs.readFileSync(this._certConfig.keyFile, 'utf8');
+                } else if (this._certConfig.key) {
+                    this._key = this._certConfig.key;
+                }
             }
 
             if (requestOptions.allowRedirects != null) {

@@ -31,6 +31,48 @@ describe('Http Tests', function () {
         assert(http, 'http client should not be null');
     });
 
+    it('checks invalid cert options', async() => {
+        try {
+            const param = { cert: { ca: 'dummy', caFile: 'dummy' }}
+            new httpm.HttpClient('typed-test-client-tests', [], param);
+            assert(false, 'Should be raised an exception.');
+        } catch (e) {
+            /* ok */
+        } 
+        try {
+            const param = { cert: { cert: 'dummy', certFile: 'dummy' }}
+            new httpm.HttpClient('typed-test-client-tests', [], param);
+            assert(false, 'Should be raised an exception.');
+        } catch (e) {
+            /* ok */
+        } 
+        try {
+            const param = { cert: { key: 'dummy', keyFile: 'dummy' }}
+            new httpm.HttpClient('typed-test-client-tests', [], param);
+            assert(false, 'Should be raised an exception.');
+        } catch (e) {
+            /* ok */
+        } 
+        try {
+            const param = { cert: { ca: 'dummy' }}
+            new httpm.HttpClient('typed-test-client-tests', [], param);
+        } catch (e) {
+            assert(false, 'Should not be raised an exception.');
+        } 
+        try {
+            const param = { cert: { cert: 'dummy' }}
+            new httpm.HttpClient('typed-test-client-tests', [], param);
+        } catch (e) {
+            assert(false, 'Should be raised an exception.');
+        } 
+        try {
+            const param = { cert: { key: 'dummy' }}
+            new httpm.HttpClient('typed-test-client-tests', [], param);
+        } catch (e) {
+            assert(false, 'Should be raised an exception.');
+        } 
+    });
+
     it('does basic http get request', async() => {
         nock('http://microsoft.com')
             .get('/')
